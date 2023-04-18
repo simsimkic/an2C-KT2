@@ -1,0 +1,117 @@
+﻿<Window x:Class="Tourist_Project.WPF.Views.OwnerMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Tourist_Project.WPF.Views"
+        mc:Ignorable="d"
+        Title="Accommodations" Height="740" Width="1250" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <DataTemplate x:Key="AccommodationDataTemplate">
+            <StackPanel Width="490" Height="auto">
+                <Image Width="400" Height="100" HorizontalAlignment="Left" Source="{Binding ImageUrl, UpdateSourceTrigger=PropertyChanged}"></Image>
+                <Label Content="{Binding Name, UpdateSourceTrigger=PropertyChanged}" FontSize="18" Height="45" Margin="210, -160, 10,0 "></Label>
+                <Label Content="{Binding Location.Country, UpdateSourceTrigger=PropertyChanged}" FontSize="16" Height="45" Margin="210, -80, 10,10 "></Label>
+                <Label Content="{Binding Location.City, UpdateSourceTrigger=PropertyChanged}" FontSize="16" Height="45" Margin="310, -80, 10,10 "></Label>
+                <Label Content="{Binding Type, UpdateSourceTrigger=PropertyChanged}" FontSize="16" Height="30" Margin="210, -30, 10,0 "></Label>
+                <Separator></Separator>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="GuestRatingDataTemplate">
+            <StackPanel>
+                <Label Content="{Binding }" HorizontalContentAlignment="Left"></Label>
+                <Separator/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="ReviewsDataTemplate">
+            <StackPanel>
+                <Label Content="{Binding }" HorizontalContentAlignment="Left"></Label>
+                <Separator/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="ReservationDataTemplate">
+            <StackPanel>
+                <Label Content="{Binding ReservationId}" Margin="0,0,0,0"></Label>
+                <Label Content="                      CheckIn            CheckOut"></Label>
+                <Label Content="Old dates:"></Label>
+                <Label Content="{Binding OldBeginningDate}" Margin="70,-26"></Label>
+                <Label Content="{Binding OldEndDate}" Margin="153,-26,0,0"></Label>
+                <Label Content="New dates:"></Label>
+                <Label Content="{Binding NewBeginningDate}" Margin="70, -26"></Label>
+                <Label Content="{Binding NewEndDate}" Margin="153, -26, 0, 0"></Label>
+                <Separator></Separator>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="270"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <GroupBox Header="Actions">
+                <Grid>
+                    <Image VerticalAlignment="Top" Source="https://i.pinimg.com/236x/b6/3e/52/b63e52d00df4c76d0403e836f5e81f32.jpg" Height="143" Margin="-22,0,92,0"></Image>
+                    <Label Content="{Binding user.FullName}" FontSize="20" Margin="132,-5,10,646" Height="50"/>
+                    <Label Content="Rating:" FontSize="15" Height="59" Margin="132,-32,22,500"/>
+                    <Label Content="{Binding Rating}" FontSize="15" Height="59" Margin="199,-32,12,500"/>
+                    <Image x:Name="Super" Source="http://www.clipartbest.com/cliparts/9iR/Lzj/9iRLzjKkT.png" Margin="115,81,0,538" Height="50" HorizontalAlignment="Center"/>
+                    <Button Height="38" Margin="10,-20,20,261" Content="Log out(ESC)"></Button>
+                    <Label Content="Accommodation" HorizontalAlignment="Center" VerticalAlignment="Top" HorizontalContentAlignment="Left" FontSize="27" FontWeight="Bold" Margin="-22,228,0,0"></Label>
+                    <Button Height="38" Margin="10,144,20,229" Content="Create(C)" Command="{Binding CreateCommand}"></Button>
+                    <Button Height="38" Margin="10,190,20,163" Content="Update(U)" Command="{Binding UpdateCommand}"></Button>
+                    <Button Height="38" Margin="10,236,20,100" Content="Delete(DEL)"></Button>
+                    <Label Content="Renovation" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Left" FontSize="27" FontWeight="Bold" Margin="3,432,0,0"></Label>
+                    <Button Height="38" Margin="10,403,20,70" Content="Renovate(Shift+R)"></Button>
+                    <Button Height="38" Margin="10,449,20,10" Content="Show Renovations(Shift+S)"></Button>
+                    <Button Height="38" Margin="10,613,20,10" Content="Demo(Q)"></Button>
+                </Grid>
+            </GroupBox>
+        </Grid>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="163*"/>
+                <RowDefinition Height="532*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="11*"></ColumnDefinition>
+                <ColumnDefinition Width="5*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" Grid.Row="0">
+                <GroupBox Header="Guest Ratings(F1)" Margin="20,0,480,-20">
+                    <StackPanel Margin="0,0,0,0">
+                        <ListBox ItemsSource="{Binding GuestRatingNotifications, UpdateSourceTrigger=PropertyChanged}"
+                                 ItemTemplate="{StaticResource GuestRatingDataTemplate}"
+                                 SelectedItem="{Binding SelectedRating, UpdateSourceTrigger=PropertyChanged}"
+                                 Height="119"></ListBox>
+                        <Button Height="38" Width="auto" Content="Rate(R)" Command="{Binding RateCommand}" VerticalAlignment="Bottom" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Reviews(F2)" Margin="209,0,288,-20">
+                    <StackPanel>
+                        <ListBox ItemsSource="{Binding ReviewNotifications, UpdateSourceTrigger=PropertyChanged}"
+                                 ItemTemplate="{StaticResource ReviewsDataTemplate}"
+                                 SelectedItem="{Binding SelectedReview, UpdateSourceTrigger=PropertyChanged}"
+                                 Height="119"></ListBox>
+                        <Button Height="38" Width="auto" Content="Show reviews(S)" VerticalAlignment="Bottom" Command="{Binding ShowReviewsCommand}"/>
+                    </StackPanel>
+                </GroupBox>
+            </Grid>
+            <GroupBox Header="My accommodations(M)" Margin="20,20" Grid.Row="1">
+                <ListBox ItemsSource="{Binding accommodations, UpdateSourceTrigger=PropertyChanged}"
+                         ItemTemplate="{StaticResource AccommodationDataTemplate}"
+                         SelectedItem="{Binding SelectedAccommodation, UpdateSourceTrigger=PropertyChanged}"/>
+
+            </GroupBox>
+            <GroupBox Header="Reschedule requests(F5)" Grid.Column="1" Grid.Row="1" Margin="10,20">
+                <StackPanel>
+                    <ListBox ItemsSource="{Binding RescheduleRequests, UpdateSourceTrigger=PropertyChanged}"
+                             ItemTemplate="{StaticResource ReservationDataTemplate}"
+                             SelectedItem="{Binding SelectedRescheduleRequest, UpdateSourceTrigger=PropertyChanged}" Height="395"></ListBox>
+                    <Button Height="38" Content="Confirm(Alt+C)" VerticalAlignment="Bottom" Command="{Binding ConfirmRescheduleCommand}"></Button>
+                    <Button Height="38" Content="Cancel(Alt+X)" VerticalAlignment="Bottom" Command="{Binding CancelRescheduleCommand}"></Button>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+    </Grid>
+</Window>
